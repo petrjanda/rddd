@@ -1,10 +1,10 @@
 require 'rddd/repository_factory'
 
-module AggregateRoot
+class AggregateRoot
 
   [:create, :update, :delete].each do |action|
     define_method action do
-      RepositoryFactory.build.send(action, self)  
+      RepositoryFactory.build(self.class).send(action, self)  
     end
   end
 end
