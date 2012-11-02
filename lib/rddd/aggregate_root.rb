@@ -1,6 +1,7 @@
+require 'rddd/entity'
 require 'rddd/repository_factory'
 
-class AggregateRoot
+class AggregateRoot < Entity
 
   [:create, :update, :delete].each do |action|
     define_method action do

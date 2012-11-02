@@ -2,7 +2,13 @@ require 'spec_helper'
 require 'rddd/aggregate_root'
 
 describe AggregateRoot do
-  let(:aggregate_root) { AggregateRoot.new }
+  let(:id) { stub('id') }
+  
+  let(:aggregate_root) { AggregateRoot.new(id) }
+
+  it 'should be entity' do
+    aggregate_root.should be_kind_of Entity
+  end
 
   [:create, :update, :delete].each do |action|
     describe "##{action}" do
