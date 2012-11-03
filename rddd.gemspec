@@ -10,7 +10,7 @@ Gem::Specification.new do |gem|
   gem.email         = ["petrjanda@me.com"]
   gem.description   = %q{Ruby DDD framework}
   gem.summary       = %q{Intention of rddd is to provide basic skeleton for DDD ruby application. Its framework agnostic, although some framework specific extensions might come later to make it easier to start.}
-  gem.homepage      = "blog.ngneers.com"
+  gem.homepage      = "http://blog.ngneers.com"
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
