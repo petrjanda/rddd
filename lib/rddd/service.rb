@@ -8,8 +8,12 @@
 # the domain, but doesn't return any data back.
 #
 class Service
-  def initialize(attributes)
+  def initialize(attributes = {})
     @attributes = attributes
+  end
+
+  def valid?
+    true
   end
 
   def execute

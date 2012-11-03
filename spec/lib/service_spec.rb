@@ -12,6 +12,11 @@ describe Service do
     end
   end  
 
+  describe '#valid?' do
+    subject { Service.new.valid? }
+    it { should be_true }
+  end
+
   describe '#execute' do
     it 'should raise not implemented' do
       lambda do
