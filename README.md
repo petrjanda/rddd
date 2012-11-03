@@ -32,7 +32,7 @@ In Rails application, it might look like:
           render :new, :errors => errors
           return
         end
-        
+
         redirect_to projects_path, :notice => 'Project was successfully created!'
       end
     end 
@@ -48,6 +48,22 @@ In Rails application, it might be used as:
         PresenterFactory.build(:projects_by_account, :account_id => params[:account_id])
       end
     end
+
+### Services
+
+Service is the object to represent a single use case. Service is usually good entry point to the system domain. Its responsibility is to orchestrate the cooperation of multiple entities, in a given order defined by use case.
+
+Service takes a list of attributes, which are necessary to execute the given use case. At the end nothing is returned, so service represent the command to the domain and doesn't return any data back.
+
+### Presenters
+
+Presenter is the view to the domain data, which is typically aggregation over multiple aggregate roots and entities. In other
+language presenter is report. In Rddd, views output plain Ruby hashes, thus no domain object is leaking outside the domain
+itself. The key design goal was to dont let framework later call any additional adhoc methods. Thats why framework doesn't interact with view object directly and pure Hash is returned back.
+
+### Aggregate root, entity, repository
+
+TBA
 
 ## Project structure
 
