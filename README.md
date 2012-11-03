@@ -51,9 +51,9 @@ In Rails application, it might be used as:
 
 ### Services
 
-Service is the object to represent a single use case. Service is usually good entry point to the system domain. Its responsibility is to orchestrate the cooperation of multiple entities, in a given order defined by use case.
+Service is the object to represent a single use case. Its responsibility is to orchestrate the cooperation of multiple aggregate roots (and entities), in a given order defined by use case.
 
-Service takes a list of attributes, which are necessary to execute the given use case. At the end nothing is returned, so service represent the command to the domain and doesn't return any data back.
+Service takes a list of attributes, which are necessary to execute the given use case. At the end nothing is returned, so service represent the command to the domain and doesn't return any data back. Therefore, client code should construct and pass all the data for the given use case and keep them, so it doesn't have to use presenters to load the result of the operation back.
 
 ### Presenters
 
@@ -65,7 +65,12 @@ itself. The key design goal was to dont let framework later call any additional 
 
 TBA
 
-## Project structure
+## Planned features
+
+* Asynchronous notifications from services - Services might be executed synchronous but also asynchronous way. Simple extension of Service bus would do the trick (add ```execute_async``` method). Its a common case that client code might
+be waiting for the result from background job execution so it can talk back to user. There is a plan to add ```Notifier``` interface, which would be available during service execution. This interface should get concrete implementation within delivery mechanism (websockets, ...).
+
+## Project file structure
 
 Recommented project file structure:
 
