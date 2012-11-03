@@ -30,6 +30,6 @@ To further enhance the separation of delivery mechanism and domain from each oth
 
 Recommented project file structure:
 
-app/entities
-app/repositories
-app/services
+    app/entities
+    app/repositories
+    app/services
