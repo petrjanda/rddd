@@ -8,8 +8,8 @@ describe Rddd::ServiceBus do
     stub('controller').tap { |controller| controller.extend Rddd::ServiceBus }
   end
 
-  describe '.execute' do
-    subject { controller.execute(:foo, attributes) }
+  describe '.execute_service' do
+    subject { controller.execute_service(:foo, attributes) }
 
     let(:service) { stub('service', :valid? => true, :execute => nil) }
 
@@ -57,7 +57,7 @@ describe Rddd::ServiceBus do
           Rddd::ServiceFactory.expects(:build).with(:foo, attributes).returns(service)
           service.expects(:execute).never
 
-          controller.execute(:foo, attributes, &error_block)
+          controller.execute_service(:foo, attributes, &error_block)
         end
       end
     end

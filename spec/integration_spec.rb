@@ -27,7 +27,7 @@ class ProjectsController
   include Rddd::ServiceBus
 
   def create(params)
-    execute(:create_project, params)
+    execute_service(:create_project, params)
   end
 end
 

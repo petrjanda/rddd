@@ -40,7 +40,7 @@ module Rddd
     # @param {Hash} Attributes to be passed to the service call.
     # @param {Block} Optional error callback block.
     #
-    def execute(service_name, attributes = {})    
+    def execute_service(service_name, attributes = {})
       raise InvalidService unless service = build_service(service_name, attributes)
 
       unless service.valid?
