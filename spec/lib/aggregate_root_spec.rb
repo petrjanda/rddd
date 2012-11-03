@@ -10,14 +10,14 @@ describe Rddd::AggregateRoot do
     aggregate_root.should be_kind_of Rddd::Entity
   end
 
-  describe '#find_by_id' do
-    subject { Rddd::AggregateRoot.find_by_id(id) }
+  describe '#find' do
+    subject { Rddd::AggregateRoot.find(id) }
 
     let(:repository) { stub('repository') }
 
     before {
       Rddd::RepositoryFactory.expects(:build).returns(repository)
-      repository.expects(:find_by_id).with(id) 
+      repository.expects(:find).with(id) 
     }
 
     it { subject }

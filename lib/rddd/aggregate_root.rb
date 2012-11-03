@@ -6,7 +6,7 @@ module Rddd
   class AggregateRoot < Entity
     extend AggregateRootFinders
 
-    finder :find_by_id
+    finder :find
 
     [:create, :update, :delete].each do |action|
       define_method action do
