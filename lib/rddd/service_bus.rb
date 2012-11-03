@@ -1,8 +1,5 @@
 require 'rddd/service_factory'
 
-#
-# Raised 
-#
 class InvalidService < RuntimeError; end
 
 #
@@ -42,9 +39,8 @@ module ServiceBus
   # @param {Hash} Attributes to be passed to the service call.
   # @param {Block} Optional error callback block.
   #
-  def execute(service_name, attributes = {})
-    service = build_service(service_name, attributes)
-    raise InvalidService unless service 
+  def execute(service_name, attributes = {})    
+    raise InvalidService unless service = build_service(service_name, attributes)
 
     unless service.valid?
       yield(service.errors) and return if block_given?
