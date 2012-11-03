@@ -1,22 +1,22 @@
 require 'spec_helper'
 require 'rddd/aggregate_root'
 
-describe AggregateRoot do
+describe Rddd::AggregateRoot do
   let(:id) { stub('id') }
   
-  let(:aggregate_root) { AggregateRoot.new(id) }
+  let(:aggregate_root) { Rddd::AggregateRoot.new(id) }
 
   it 'should be entity' do
-    aggregate_root.should be_kind_of Entity
+    aggregate_root.should be_kind_of Rddd::Entity
   end
 
   describe '#find_by_id' do
-    subject { AggregateRoot.find_by_id(id) }
+    subject { Rddd::AggregateRoot.find_by_id(id) }
 
     let(:repository) { stub('repository') }
 
     before {
-      RepositoryFactory.expects(:build).returns(repository)
+      Rddd::RepositoryFactory.expects(:build).returns(repository)
       repository.expects(:find_by_id).with(id) 
     }
 
@@ -30,7 +30,7 @@ describe AggregateRoot do
       let(:repository) { stub('repository') }
 
       it 'should call #create on repository' do
-        RepositoryFactory.expects(:build).with(AggregateRoot).returns(repository)
+        Rddd::RepositoryFactory.expects(:build).with(Rddd::AggregateRoot).returns(repository)
 
         repository.expects(action).with(subject)
         

@@ -1,5 +1,5 @@
 #
 # Repository base class.
 #
-class Repository
+class Rddd::Repository
 end

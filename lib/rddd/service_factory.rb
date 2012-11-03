@@ -1,10 +1,10 @@
 require 'rddd/configuration'
 
-class ServiceFactory
+class Rddd::ServiceFactory
   def self.build(name, attributes)
     class_name = "#{camel_case(name.to_s)}Service"
-    ns = Configuration.instance.services_namespace
-    
+    ns = Rddd::Configuration.instance.services_namespace
+
     ns.const_get(class_name.to_sym).new(attributes)
   end
 

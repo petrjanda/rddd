@@ -2,9 +2,9 @@ require 'spec_helper'
 require 'rddd/entity'
 require 'rddd/repository_factory'
 
-describe RepositoryFactory do
+describe Rddd::RepositoryFactory do
   describe '.build' do
-    subject { RepositoryFactory.build(Entity) }
+    subject { Rddd::RepositoryFactory.build(Rddd::Entity) }
 
     context 'with existing repository' do
       before do
@@ -28,7 +28,7 @@ describe RepositoryFactory do
 
     context 'with not existing repository' do
       it 'should raise NotExistingRepository' do
-        lambda { subject }.should raise_exception NotExistingRepository
+        lambda { subject }.should raise_exception Rddd::NotExistingRepository
       end
     end
   end

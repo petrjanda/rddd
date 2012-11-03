@@ -4,11 +4,11 @@ require 'rddd/aggregate_root'
 require 'rddd/service_bus'
 require 'rddd/service'
 
-class Project < AggregateRoot
+class Project < Rddd::AggregateRoot
   attr_accessor :name
 end
 
-class CreateProjectService < Service
+class CreateProjectService < Rddd::Service
   def execute
     project = Project.new(@attributes[:id])
     project.name = @attributes[:name]
@@ -24,7 +24,7 @@ class ProjectRepository
 end
 
 class ProjectsController
-  include ServiceBus
+  include Rddd::ServiceBus
 
   def create(params)
     execute(:create_project, params)

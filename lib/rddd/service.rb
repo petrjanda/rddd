@@ -7,7 +7,7 @@
 # use case. At the end nothing is returned, so service represent the command to
 # the domain, but doesn't return any data back.
 #
-class Service
+class Rddd::Service
   def initialize(attributes = {})
     @attributes = attributes
   end

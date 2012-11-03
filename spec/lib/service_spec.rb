@@ -1,11 +1,11 @@
 require 'spec_helper'
 require 'rddd/service'
 
-describe Service do
+describe Rddd::Service do
   let(:attributes) { stub('attributes') }
 
   describe '#initialize' do
-    subject { Service.new(attributes) }
+    subject { Rddd::Service.new(attributes) }
 
     it 'should store attributes' do
       subject.instance_variable_get(:@attributes).should == attributes
@@ -13,14 +13,14 @@ describe Service do
   end  
 
   describe '#valid?' do
-    subject { Service.new.valid? }
+    subject { Rddd::Service.new.valid? }
     it { should be_true }
   end
 
   describe '#execute' do
     it 'should raise not implemented' do
       lambda do
-        Service.new(attributes).execute
+        Rddd::Service.new(attributes).execute
       end.should raise_exception(NotImplementedError)
     end
   end

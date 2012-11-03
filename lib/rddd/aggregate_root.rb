@@ -2,8 +2,8 @@ require 'rddd/entity'
 require 'rddd/repository_factory'
 require 'rddd/aggregate_root_finders'
 
-class AggregateRoot < Entity
-  extend AggregateRootFinders
+class Rddd::AggregateRoot < Rddd::Entity
+  extend Rddd::AggregateRootFinders
 
   finder :find_by_id
 

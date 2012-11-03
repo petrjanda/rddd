@@ -12,6 +12,6 @@ module Rddd
   # end
   #
   def self.configure
-    yield(Configuration.instance)
+    yield(Rddd::Configuration.instance)
   end
 end

@@ -1,6 +1,6 @@
 require 'rddd/service_factory'
 
-class InvalidService < RuntimeError; end
+class Rddd::InvalidService < RuntimeError; end
 
 #
 # Service bus is the central entry point for execution of service within the
@@ -31,7 +31,7 @@ class InvalidService < RuntimeError; end
 # end 
 #
 #
-module ServiceBus
+module Rddd::ServiceBus
   #
   # Execute the given service.
   #
@@ -40,7 +40,7 @@ module ServiceBus
   # @param {Block} Optional error callback block.
   #
   def execute(service_name, attributes = {})    
-    raise InvalidService unless service = build_service(service_name, attributes)
+    raise Rddd::InvalidService unless service = build_service(service_name, attributes)
 
     unless service.valid?
       yield(service.errors) and return if block_given?
@@ -52,6 +52,6 @@ module ServiceBus
   private
 
   def build_service(service_name, attributes)
-    ServiceFactory.build(service_name, attributes)
+    Rddd::ServiceFactory.build(service_name, attributes)
   end
 end

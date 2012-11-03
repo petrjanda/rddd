@@ -1,4 +1,4 @@
-class Entity
+class Rddd::Entity
   attr_reader :id
 
   def initialize(id)

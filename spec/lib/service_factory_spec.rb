@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'rddd/service_factory'
 
-describe ServiceFactory do
+describe Rddd::ServiceFactory do
   let(:attributes) { stub('attributes') }
 
   before do
@@ -22,7 +22,7 @@ describe ServiceFactory do
     it do
       Rddd::Services::CreateProjectService.expects(:new).with(attributes)
 
-      ServiceFactory.build(:create_project, attributes)
+      Rddd::ServiceFactory.build(:create_project, attributes)
     end
   end
 end
