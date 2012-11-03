@@ -5,7 +5,7 @@ class Rddd::Entity
     @id = id
   end
 
-  def ==(b)
-    @id == b.id
+  def ==(other)
+    @id == other.id
   end
 end

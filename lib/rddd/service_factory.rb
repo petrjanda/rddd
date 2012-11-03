@@ -11,7 +11,7 @@ module Rddd
 
     def self.camel_case(string)
       return string if string !~ /_/ && string =~ /[A-Z]+.*/
-      string.split('_').map{|e| e.capitalize}.join
+      string.split('_').map{|token| token.capitalize}.join
     end
   end
 end
