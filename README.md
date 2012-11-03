@@ -13,7 +13,7 @@ Intention of rddd is to provide basic skeleton for DDD ruby application. Its fra
 
 ## Basic architecture
 
-![Architecture overview](https://github.com/petrjanda/rddd/blob/master/documentation/rddd.png)
+![Architecture overview](https://github.com/petrjanda/rddd/blob/master/documentation/rddd.png?raw=true)
 
 As defined in DDD itself, framework has couple basic object types:
 
