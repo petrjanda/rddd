@@ -8,7 +8,7 @@ Intention of rddd is to provide basic skeleton for DDD ruby application. Its fra
 ## Key goals
 
 * Provide basic DDD elements
-* Support separation of domain from delivery mechanism (MVC framework)
+* Support separation of domain from delivery mechanism (mostly web framework such Rails or Sinatra)
 * Support separation of domain from persistancy mechanism
 
 ## Basic architecture
