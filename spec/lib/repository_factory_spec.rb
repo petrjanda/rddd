@@ -7,12 +7,22 @@ describe RepositoryFactory do
     subject { RepositoryFactory.build(Entity) }
 
     context 'with existing repository' do
-      before { Object.const_set(:EntityRepository, Class.new) }
+      before do
+        Rddd.const_set(:Repositories, Module.new)
+        Rddd::Repositories.const_set(:EntityRepository, Class.new)
 
-      after { Object.class_eval{remove_const :EntityRepository} }
+        Rddd.configure { |config| config.repositories_namespace = Rddd::Repositories }
+      end
+      
+      after do
+        Rddd::Repositories.class_eval {remove_const(:EntityRepository)}
+        Rddd.class_eval {remove_const(:Repositories)}
+
+        Rddd.configure { |config| config.repositories_namespace = Object }
+      end
 
       it 'should return instance of repository' do
-        should be_kind_of EntityRepository
+        should be_kind_of Rddd::Repositories::EntityRepository
       end
     end
 

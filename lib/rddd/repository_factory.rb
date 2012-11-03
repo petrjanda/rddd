@@ -1,4 +1,5 @@
 require 'rddd/repository'
+require 'rddd/configuration'
 
 class NotExistingRepository < RuntimeError
 end
@@ -6,9 +7,10 @@ end
 class RepositoryFactory
   def self.build(clazz)
     repository_name = "#{clazz}Repository"
-    
+    ns = Configuration.instance.repositories_namespace
+
     begin
-      repository = const_get(repository_name)
+      repository = ns.const_get(repository_name)
     rescue
       raise NotExistingRepository unless repository
     end
