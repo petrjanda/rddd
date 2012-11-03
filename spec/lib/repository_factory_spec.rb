@@ -1,25 +1,24 @@
 require 'spec_helper'
+require 'rddd/entity'
 require 'rddd/repository_factory'
 
 describe RepositoryFactory do
   describe '.build' do
-    subject { RepositoryFactory.build }
+    subject { RepositoryFactory.build(Entity) }
 
-    let(:driver) { stub('driver') }
+    context 'with existing repository' do
+      before { Object.const_set(:EntityRepository, Class.new) }
 
-    context 'with driver' do
-      before { RepositoryFactory.driver = driver }
-
-      after { RepositoryFactory.driver = nil }
+      after { Object.class_eval{remove_const :EntityRepository} }
 
       it 'should return instance of repository' do
-        should be_kind_of Repository
+        should be_kind_of EntityRepository
       end
     end
 
-    context 'without driver' do
-      it 'should raise NoDriverException' do
-        lambda { subject }.should raise_exception NoDatabaseDriver
+    context 'with not existing repository' do
+      it 'should raise NotExistingRepository' do
+        lambda { subject }.should raise_exception NotExistingRepository
       end
     end
   end

@@ -1,16 +1,18 @@
 require 'rddd/repository'
 
-class NoDatabaseDriver < RuntimeError
+class NotExistingRepository < RuntimeError
 end
 
 class RepositoryFactory
-  def self.driver=(driver)
-    @driver = driver
-  end
+  def self.build(clazz)
+    repository_name = "#{clazz}Repository"
+    
+    begin
+      repository = const_get(repository_name)
+    rescue
+      raise NotExistingRepository unless repository
+    end
 
-  def self.build
-    raise NoDatabaseDriver.new unless @driver
-
-    Repository.new(@driver)
+    repository.new
   end
 end

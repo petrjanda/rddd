@@ -10,6 +10,19 @@ describe AggregateRoot do
     aggregate_root.should be_kind_of Entity
   end
 
+  describe '#find_by_id' do
+    subject { AggregateRoot.find_by_id(id) }
+
+    let(:repository) { stub('repository') }
+
+    before {
+      RepositoryFactory.expects(:build).returns(repository)
+      repository.expects(:find_by_id).with(id) 
+    }
+
+    it { subject }
+  end
+
   [:create, :update, :delete].each do |action|
     describe "##{action}" do
       subject { aggregate_root.send(action) }
