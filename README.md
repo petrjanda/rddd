@@ -11,7 +11,9 @@ Intention of rddd is to provide basic skeleton for DDD ruby application. Its fra
 * Support separation of domain from delivery mechanism (MVC framework)
 * Support separation of domain from persistancy mechanism
 
-## Basic elements
+## Basic architecture
+
+![Architecture overview](https://github.com/petrjanda/rddd/blob/master/documentation/rddd.png)
 
 As defined in DDD itself, framework has couple basic object types:
 
