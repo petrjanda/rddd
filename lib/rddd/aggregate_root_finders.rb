@@ -1,8 +1,10 @@
 module Rddd
   module AggregateRootFinders
-    def finder(name)
-      define_singleton_method name do |*args|
-        repository.send(name, *args)
+    def finder(name, &block)
+      (class << self; self; end).instance_eval do
+        define_method name do |*args|
+          repository.send(name, *args)
+        end
       end
     end
 
