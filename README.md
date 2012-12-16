@@ -1,6 +1,10 @@
 rddd
 ====
 
+## Code quality check
+
+![rDDD@sniffer](https://sniffer.io/info/public-project-135230969156499600)
+
 Ruby DDD (Domain Driven Development) framework
 
 Intention of rddd is to provide basic skeleton for DDD ruby application. Its framework agnostic, although some framework specific extensions might come later to make it easier to start.
