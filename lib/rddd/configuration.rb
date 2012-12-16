@@ -8,10 +8,10 @@ module Rddd
   class Configuration
     include Singleton
 
-    attr_writer :services_namespace, :repositories_namespace
+    attr_writer :service_creator, :repositories_namespace
 
-    def services_namespace
-      @services_namespace || Object
+    def service_creator
+      @service_creator
     end
 
     def repositories_namespace

@@ -1,5 +1,6 @@
 require 'rddd/version'
 require 'rddd/configuration'
+require 'core_ext/string'
 
 module Rddd
   #
@@ -8,7 +9,11 @@ module Rddd
   # ## Usage
   #
   # Rddd.configure do |config|
-  #   config.services_namespace = Rddd::Services
+  #   config.service_creator = lambda do |name|
+  #     class_name = "#{name.to_s.camel_case}Service"
+  #
+  #     Rddd::Services.const_get(class_name.to_sym)
+  #   end
   # end
   #
   def self.configure

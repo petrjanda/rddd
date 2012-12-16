@@ -33,6 +33,13 @@ end
 
 describe 'CreateProject' do
   it 'should call project save' do
+    Rddd.configure do |config|
+      config.service_creator = lambda do |name|
+        class_name = "#{name.to_s.camel_case}Service"
+        Object.const_get(class_name.to_sym)
+      end
+    end
+
     ProjectRepository.any_instance.expects(:create)
 
     ProjectsController.new.create(:id => 1, :name => 'Rddd')

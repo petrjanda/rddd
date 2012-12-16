@@ -4,25 +4,44 @@ require 'rddd/service_factory'
 describe Rddd::ServiceFactory do
   let(:attributes) { stub('attributes') }
 
+  let(:service_creator) do
+    lambda do |name|
+      class_name = "#{name.to_s.camel_case}Service"
+      Rddd::Services.const_get(class_name.to_sym)
+    end
+  end
+
   before do
     Rddd.const_set(:Services, Module.new)
     Rddd::Services.const_set(:CreateProjectService, Class.new)
-
-    Rddd.configure { |config| config.services_namespace = Rddd::Services }
   end
 
   after do
     Rddd::Services.class_eval {remove_const(:CreateProjectService)}
     Rddd.class_eval {remove_const(:Services)}
-    
-    Rddd.configure { |config| config.services_namespace = Object }
   end
 
   describe '.build' do
-    it do
-      Rddd::Services::CreateProjectService.expects(:new).with(attributes)
+    context 'configuration service_creator given' do
+      before do
+        Rddd.configure { |config| config.service_creator = service_creator }
+      end
 
-      Rddd::ServiceFactory.build(:create_project, attributes)
+      after do
+        Rddd.configure { |config| config.service_creator = nil }
+      end
+
+      it 'should call the appropriate service' do
+        Rddd::Services::CreateProjectService.expects(:new).with(attributes)
+
+        Rddd::ServiceFactory.build(:create_project, attributes)
+      end
+    end
+
+    context 'configuration service_creator not given' do
+      it 'should raise exception' do
+        expect { Rddd::ServiceFactory.build(:create_project, attributes) }.to raise_exception Rddd::ServiceFactory::ServiceCreatorNotGiven
+      end
     end
   end
 end
