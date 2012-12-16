@@ -3,7 +3,7 @@ rddd
 
 ## Code quality check
 
-![rDDD@sniffer](https://sniffer.io/info/public-project-135230969156499600)
+[rDDD@sniffer](https://sniffer.io/info/public-project-135230969156499600)
 
 Ruby DDD (Domain Driven Development) framework
 
