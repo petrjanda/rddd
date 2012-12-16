@@ -31,13 +31,13 @@ module Rddd
       # Create new rule applied to specified action and perform the given
       # block.
       #
-      # @param {Symbol} Action the rule applies to.
+      # @param {Symbol | Array} Action the rule applies to.
       # @param {Block} Block to be executed to evaluate authorization.
       #
       def can(action, &block)
+        actions = action.kind_of?(Array) ? action : [action]
         @rules ||= []
-
-        @rules << Rule.new(action, &block)
+        @rules.concat actions.map { |action| Rule.new(action, &block) }
       end
     end
   end

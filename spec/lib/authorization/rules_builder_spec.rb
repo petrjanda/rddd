@@ -17,13 +17,25 @@ describe Rddd::Authorization::RulesBuilder do
 
     let(:block) { lambda{|user, params| } }
 
-    before do
-      Rddd::Authorization::Rule.expects(:new).returns(rule)
+    context 'one rule' do
+      before do
+        Rddd::Authorization::Rule.expects(:new).returns(rule)
 
-      builder.can(:foo, &block)
+        builder.can(:foo, &block)
+      end
+
+      its(:first) { should be rule }
     end
 
-    its(:first) { should be rule }
+    context 'double rule' do
+      before do
+        Rddd::Authorization::Rule.expects(:new).twice.returns(rule)
+
+        builder.can([:foo, :bar], &block)
+      end
+
+      its(:size) { should eql 2 }
+    end
   end
 
 end
