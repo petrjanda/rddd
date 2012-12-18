@@ -38,6 +38,18 @@ describe Rddd::ServiceFactory do
       end
     end
 
+    context 'not existing service' do
+      before do
+        Rddd.configure { |config| config.service_creator = service_creator }
+      end
+
+      after do
+        Rddd.configure { |config| config.service_creator = nil }
+      end
+
+      it { expect { Rddd::ServiceFactory.build(:foo, attributes) }.to raise_exception Rddd::ServiceFactory::InvalidService }
+    end
+
     context 'configuration service_creator not given' do
       it 'should raise exception' do
         expect { Rddd::ServiceFactory.build(:create_project, attributes) }.to raise_exception Rddd::ServiceFactory::CreatorNotGiven

@@ -4,19 +4,27 @@
 # cooperation of multiple entities, in a given order defined by use case.
 #
 # Service takes a list of attributes, which are necessary to execute the given
-# use case. At the end nothing is returned, so service represent the command to
-# the domain, but doesn't return any data back.
+# use case. You shouldn't need to create Service directly. Instead use ServiceBus.
 #
-class Rddd::Service
-  def initialize(attributes = {})
-    @attributes = attributes
-  end
+# Its good practice to leave your service return-less. Although if you *really* need
+# something back from the service for other usage, be sure you return just data in
+# form of DTO (Hash, Array of Hashes), but no Entities and AggregateRoot or other
+# domain objects, so you dont leak business out.
+#
+# Remember dummy data goes in, dummy data goes out.
+#
+module Rddd
+  class Service
+    def initialize(attributes = {})
+      @attributes = attributes
+    end
 
-  def valid?
-    true
-  end
+    def valid?
+      true
+    end
 
-  def execute
-    raise NotImplementedError  
+    def execute
+      raise NotImplementedError  
+    end
   end
 end

@@ -22,15 +22,6 @@ describe Rddd::ServiceBus do
       end
     end
 
-    context 'not-existing service' do
-      it do
-        Rddd::ServiceFactory.expects(:build).with(:foo, attributes).returns(nil)
-        service.expects(:execute).never
-
-        lambda { subject }.should raise_exception Rddd::InvalidService
-      end
-    end
-
     context 'not valid call to service' do
       context 'without block' do
         before { service.stubs(:valid?).returns(false) }

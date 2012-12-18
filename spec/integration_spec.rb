@@ -54,5 +54,14 @@ describe 'CreateProject' do
     ProjectRepository.any_instance.expects(:create)
 
     ProjectsController.new.create(:id => 1, :name => 'Rddd')
-  end  
+  end
+end
+
+describe 'NotExistingService' do
+  it 'should raise' do
+    controller = Object.new
+    controller.extend Rddd::ServiceBus
+
+    expect { controller.execute_service(:foo) }.to raise_exception Rddd::ServiceFactory::InvalidService
+  end
 end

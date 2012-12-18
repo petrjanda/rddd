@@ -1,8 +1,6 @@
 require 'rddd/service_factory'
 
 module Rddd
-  class InvalidService < RuntimeError; end
-
   #
   # Service bus is the central entry point for execution of service within the
   # domain layer. Unless you have a very good reason, services should not be
@@ -41,7 +39,7 @@ module Rddd
     # @param {Block} Optional error callback block.
     #
     def execute_service(service_name, attributes = {})
-      raise InvalidService unless service = build_service(service_name, attributes)
+      service = build_service(service_name, attributes)
 
       unless service.valid?
         yield(service.errors) and return if block_given?
