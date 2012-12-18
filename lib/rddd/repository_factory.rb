@@ -5,6 +5,12 @@ module Rddd
   class NotExistingRepository < RuntimeError
   end
 
+  #
+  # @private
+  #
+  # Create instance of Repository using the Configration#repository_creator
+  # and passing the class along.
+  #
   class RepositoryFactory
     CreatorNotGiven = Class.new(RuntimeError)
 

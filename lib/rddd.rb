@@ -8,13 +8,13 @@ module Rddd
   #
   # ## Usage
   #
-  # Rddd.configure do |config|
-  #   config.service_creator = lambda do |name|
-  #     class_name = "#{name.to_s.camel_case}Service"
+  #   Rddd.configure do |config|
+  #     config.service_creator = lambda do |name|
+  #       class_name = "#{name.to_s.camel_case}Service"
   #
-  #     Rddd::Services.const_get(class_name.to_sym)
+  #       Rddd::Services.const_get(class_name.to_sym)
+  #     end
   #   end
-  # end
   #
   def self.configure
     yield(Rddd::Configuration.instance)
