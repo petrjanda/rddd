@@ -40,7 +40,7 @@ describe Rddd::ServiceFactory do
 
     context 'configuration service_creator not given' do
       it 'should raise exception' do
-        expect { Rddd::ServiceFactory.build(:create_project, attributes) }.to raise_exception Rddd::ServiceFactory::ServiceCreatorNotGiven
+        expect { Rddd::ServiceFactory.build(:create_project, attributes) }.to raise_exception Rddd::ServiceFactory::CreatorNotGiven
       end
     end
   end
