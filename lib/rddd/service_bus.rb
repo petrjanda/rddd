@@ -42,7 +42,8 @@ module Rddd
       service = build_service(service_name, attributes)
 
       unless service.valid?
-        yield(service.errors) and return if block_given?
+        yield(service.errors) if block_given?
+        return
       end
 
       service.execute
