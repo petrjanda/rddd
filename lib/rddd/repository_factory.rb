@@ -6,12 +6,15 @@ module Rddd
   end
 
   class RepositoryFactory
+    CreatorNotGiven = Class.new(RuntimeError)
+
     def self.build(clazz)
-      repository_name = "#{clazz.name.split('::').last}Repository"
-      ns = Configuration.instance.repositories_namespace
+      creator = Configuration.instance.repository_creator
+
+      raise CreatorNotGiven unless creator
 
       begin
-        repository = ns.const_get(repository_name)
+        repository = creator.call(clazz)
       rescue
         raise NotExistingRepository unless repository
       end

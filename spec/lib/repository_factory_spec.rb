@@ -1,34 +1,46 @@
 require 'spec_helper'
-require 'rddd/entity'
 require 'rddd/repository_factory'
 
 describe Rddd::RepositoryFactory do
+  let(:project) { stub('project', :name => 'Foo', :class => stub(:name => 'Foo')) }
+
+  let(:repository_creator) do
+    lambda do |clazz|
+      class_name = "#{clazz.name.to_s.camel_case}Repository"
+      Rddd::Repositories.const_get(class_name.to_sym)
+    end
+  end
+
+  before do
+    Rddd.const_set(:Repositories, Module.new)
+    Rddd::Repositories.const_set(:FooRepository, Class.new)
+  end
+
+  after do
+    Rddd::Repositories.class_eval { remove_const(:FooRepository) }
+    Rddd.class_eval { remove_const(:Repositories) }
+  end
+
   describe '.build' do
-    subject { Rddd::RepositoryFactory.build(Rddd::Entity) }
-
-    context 'with existing repository' do
+    context 'configuration repository_creator given' do
       before do
-        Rddd.const_set(:Repositories, Module.new)
-        Rddd::Repositories.const_set(:EntityRepository, Class.new)
-
-        Rddd.configure { |config| config.repositories_namespace = Rddd::Repositories }
+        Rddd.configure { |config| config.repository_creator = repository_creator }
       end
-      
+
       after do
-        Rddd::Repositories.class_eval {remove_const(:EntityRepository)}
-        Rddd.class_eval {remove_const(:Repositories)}
-
-        Rddd.configure { |config| config.repositories_namespace = Object }
+        Rddd.configure { |config| config.repository_creator = nil }
       end
 
-      it 'should return instance of repository' do
-        should be_kind_of Rddd::Repositories::EntityRepository
+      it 'should call the appropriate service' do
+        Rddd::Repositories::FooRepository.expects(:new)
+
+        Rddd::RepositoryFactory.build(project.class)
       end
     end
 
-    context 'with not existing repository' do
-      it 'should raise NotExistingRepository' do
-        lambda { subject }.should raise_exception Rddd::NotExistingRepository
+    context 'configuration repository_creator not given' do
+      it 'should raise exception' do
+        expect { Rddd::RepositoryFactory.build(project.class) }.to raise_exception Rddd::RepositoryFactory::CreatorNotGiven
       end
     end
   end

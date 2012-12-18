@@ -32,14 +32,25 @@ class ProjectsController
 end
 
 describe 'CreateProject' do
-  it 'should call project save' do
+  let(:repository_creator) do
+    lambda do |name|
+      class_name = "#{name.to_s.camel_case}Repository"
+      Object.const_get(class_name.to_sym)
+    end
+  end
+
+  before do
     Rddd.configure do |config|
+      config.repository_creator = repository_creator
+
       config.service_creator = lambda do |name|
         class_name = "#{name.to_s.camel_case}Service"
         Object.const_get(class_name.to_sym)
       end
     end
-
+  end
+  
+  it 'should call project save' do
     ProjectRepository.any_instance.expects(:create)
 
     ProjectsController.new.create(:id => 1, :name => 'Rddd')
