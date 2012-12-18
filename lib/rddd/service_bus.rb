@@ -34,9 +34,9 @@ module Rddd
     #
     # Execute the given service.
     #
-    # @param {Symbol} Service to be executed.
-    # @param {Hash} Attributes to be passed to the service call.
-    # @param {Block} Optional error callback block.
+    # @param [Symbol] service to be executed.
+    # @param [Hash] attributes to be passed to the service call.
+    # @param [Block] optional error callback block.
     #
     def execute_service(service_name, attributes = {})
       service = build_service(service_name, attributes)

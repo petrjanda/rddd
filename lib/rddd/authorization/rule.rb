@@ -11,8 +11,8 @@ module Rddd
       #
       # Initialize.
       #
-      # @param {Symbol} Action to apply rule to.
-      # @param {Block} Block to be evaluated during authorization.
+      # @param [Symbol] Action to apply rule to.
+      # @param [Block] Block to be evaluated during authorization.
       #
       def initialize(action, &block)
         # Block should take two arguments - user and params.
@@ -26,6 +26,7 @@ module Rddd
       # Is the Rule for given action?
       #
       # @param {Symbol} Action to be matched.
+      # @private
       #
       def is_for?(action)
         @action == action
