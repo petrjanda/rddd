@@ -1,11 +1,11 @@
 require 'spec_helper'
-require 'rddd/service_bus'
+require 'rddd/services/service_bus'
 
-describe Rddd::ServiceBus do
+describe Rddd::Services::ServiceBus do
   let(:attributes) { stub('attributes') }
 
   let(:controller) do
-    stub('controller').tap { |controller| controller.extend Rddd::ServiceBus }
+    stub('controller').tap { |controller| controller.extend Rddd::Services::ServiceBus }
   end
 
   describe '.execute_service' do
@@ -15,7 +15,7 @@ describe Rddd::ServiceBus do
 
     context 'existing service' do
       it do
-        Rddd::ServiceFactory.expects(:build).with(:foo, attributes).returns(service)
+        Rddd::Services::ServiceFactory.expects(:build).with(:foo, attributes).returns(service)
         service.expects(:execute)
 
         subject
@@ -27,7 +27,7 @@ describe Rddd::ServiceBus do
         before { service.stubs(:valid?).returns(false) }
 
         it do
-          Rddd::ServiceFactory.expects(:build).with(:foo, attributes).returns(service)
+          Rddd::Services::ServiceFactory.expects(:build).with(:foo, attributes).returns(service)
           service.expects(:execute).never
 
           subject
@@ -45,7 +45,7 @@ describe Rddd::ServiceBus do
         let(:error_block) { lambda {|errors|} }
 
         it do
-          Rddd::ServiceFactory.expects(:build).with(:foo, attributes).returns(service)
+          Rddd::Services::ServiceFactory.expects(:build).with(:foo, attributes).returns(service)
           service.expects(:execute).never
 
           controller.execute_service(:foo, attributes, &error_block)

@@ -1,14 +1,14 @@
 require 'spec_helper'
-require 'rddd/service'
 require 'rddd/aggregate_root'
-require 'rddd/service_bus'
-require 'rddd/service'
+require 'rddd/services/service'
+require 'rddd/services/service_bus'
+require 'rddd/services/service'
 
 class Project < Rddd::AggregateRoot
   attr_accessor :name
 end
 
-class CreateProjectService < Rddd::Service
+class CreateProjectService < Rddd::Services::Service
   def execute
     project = Project.new(@attributes[:id])
     project.name = @attributes[:name]
@@ -24,7 +24,7 @@ class ProjectRepository
 end
 
 class ProjectsController
-  include Rddd::ServiceBus
+  include Rddd::Services::ServiceBus
 
   def create(params)
     execute_service(:create_project, params)
@@ -60,8 +60,8 @@ end
 describe 'NotExistingService' do
   it 'should raise' do
     controller = Object.new
-    controller.extend Rddd::ServiceBus
+    controller.extend Rddd::Services::ServiceBus
 
-    expect { controller.execute_service(:foo) }.to raise_exception Rddd::ServiceFactory::InvalidService
+    expect { controller.execute_service(:foo) }.to raise_exception Rddd::Services::ServiceFactory::InvalidService
   end
 end

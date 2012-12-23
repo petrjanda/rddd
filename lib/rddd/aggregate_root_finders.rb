@@ -13,7 +13,7 @@ module Rddd
     private
 
     def craete_static_method(name, &block)
-      (class << self; self; end).instance_eval do
+      (class << self; self; end).module_eval do
         define_method name, &block
       end
     end

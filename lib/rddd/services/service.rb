@@ -14,17 +14,19 @@
 # Remember dummy data goes in, dummy data goes out.
 #
 module Rddd
-  class Service
-    def initialize(attributes = {})
-      @attributes = attributes
-    end
+  module Services
+    class Service
+      def initialize(attributes = {})
+        @attributes = attributes
+      end
 
-    def valid?
-      true
-    end
+      def valid?
+        true
+      end
 
-    def execute
-      raise NotImplementedError  
+      def execute
+        raise NotImplementedError  
+      end
     end
   end
 end

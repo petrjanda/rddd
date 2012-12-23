@@ -1,4 +1,4 @@
-require 'rddd/service_factory'
+require 'rddd/services/service_factory'
 
 module Rddd
   #
@@ -30,29 +30,32 @@ module Rddd
   # end 
   #
   #
-  module ServiceBus
-    #
-    # Execute the given service.
-    #
-    # @param [Symbol] service to be executed.
-    # @param [Hash] attributes to be passed to the service call.
-    # @param [Block] optional error callback block.
-    #
-    def execute_service(service_name, attributes = {})
-      service = build_service(service_name, attributes)
 
-      unless service.valid?
-        yield(service.errors) if block_given?
-        return
+  module Services
+    module ServiceBus
+      #
+      # Execute the given service.
+      #
+      # @param [Symbol] service to be executed.
+      # @param [Hash] attributes to be passed to the service call.
+      # @param [Block] optional error callback block.
+      #
+      def execute_service(service_name, attributes = {})
+        service = build_service(service_name, attributes)
+
+        unless service.valid?
+          yield(service.errors) if block_given?
+          return
+        end
+
+        service.execute
       end
 
-      service.execute
-    end
+      private
 
-    private
-
-    def build_service(service_name, attributes)
-      ServiceFactory.build(service_name, attributes)
+      def build_service(service_name, attributes)
+        ServiceFactory.build(service_name, attributes)
+      end
     end
   end
 end
