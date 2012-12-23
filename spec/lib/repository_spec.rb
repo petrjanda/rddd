@@ -1,26 +1,30 @@
 require 'spec_helper'
-require 'rddd/repository'
+require 'rddd/repositories/repository'
 
-describe Rddd::Repository do
-  let(:repository) { Rddd::Repository.new }
+module Rddd
+  module Repositories
+    describe Base do
+      let(:repository) { Base.new }
 
-  let(:aggregate_root) { stub('aggregate_root') }
+      let(:aggregate_root) { stub('aggregate_root') }
 
-  describe '#create' do
-    subject { repository.create(aggregate_root) }
+      describe '#create' do
+        subject { repository.create(aggregate_root) }
 
-    it { expect { subject }.to raise_exception NotImplementedError }
-  end
+        it { expect { subject }.to raise_exception NotImplementedError }
+      end
 
-  describe '#update' do
-    subject { repository.update(aggregate_root) }
+      describe '#update' do
+        subject { repository.update(aggregate_root) }
 
-    it { expect { subject }.to raise_exception NotImplementedError }
-  end
+        it { expect { subject }.to raise_exception NotImplementedError }
+      end
 
-  describe '#delete' do
-    subject { repository.delete(aggregate_root) }
+      describe '#delete' do
+        subject { repository.delete(aggregate_root) }
 
-    it { expect { subject }.to raise_exception NotImplementedError }
+        it { expect { subject }.to raise_exception NotImplementedError }
+      end
+    end
   end
 end

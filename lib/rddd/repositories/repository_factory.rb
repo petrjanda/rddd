@@ -1,4 +1,4 @@
-require 'rddd/repository'
+require 'rddd/repositories/repository'
 require 'rddd/configuration'
 
 module Rddd

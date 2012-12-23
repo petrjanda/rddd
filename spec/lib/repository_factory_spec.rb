@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'rddd/repository_factory'
+require 'rddd/repositories/repository_factory'
 
 describe Rddd::RepositoryFactory do
   let(:project) { stub('project', :name => 'Foo', :class => stub(:name => 'Foo')) }
@@ -12,13 +12,11 @@ describe Rddd::RepositoryFactory do
   end
 
   before do
-    Rddd.const_set(:Repositories, Module.new)
     Rddd::Repositories.const_set(:FooRepository, Class.new)
   end
 
   after do
     Rddd::Repositories.class_eval { remove_const(:FooRepository) }
-    Rddd.class_eval { remove_const(:Repositories) }
   end
 
   describe '.build' do

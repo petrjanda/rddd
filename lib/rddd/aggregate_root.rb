@@ -1,5 +1,5 @@
 require 'rddd/entity'
-require 'rddd/repository_factory'
+require 'rddd/repositories/repository_factory'
 require 'rddd/aggregate_root_finders'
 
 module Rddd
