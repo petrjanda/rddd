@@ -16,7 +16,7 @@ describe Rddd::AggregateRoot do
     let(:repository) { stub('repository') }
 
     before {
-      Rddd::RepositoryFactory.expects(:build).returns(repository)
+      Rddd::Repositories::RepositoryFactory.expects(:build).returns(repository)
       repository.expects(:find).with(id) 
     }
 
@@ -30,7 +30,7 @@ describe Rddd::AggregateRoot do
       let(:repository) { stub('repository') }
 
       it 'should call #create on repository' do
-        Rddd::RepositoryFactory.expects(:build).with(Rddd::AggregateRoot).returns(repository)
+        Rddd::Repositories::RepositoryFactory.expects(:build).with(Rddd::AggregateRoot).returns(repository)
 
         repository.expects(action).with(subject)
         
