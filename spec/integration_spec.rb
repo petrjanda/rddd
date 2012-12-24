@@ -1,10 +1,10 @@
 require 'spec_helper'
-require 'rddd/aggregate_root'
+require 'rddd/aggregates/aggregate_root'
 require 'rddd/services/service'
 require 'rddd/services/service_bus'
 require 'rddd/services/service'
 
-class Project < Rddd::AggregateRoot
+class Project < Rddd::Aggregates::AggregateRoot
   attr_accessor :name
 end
 
