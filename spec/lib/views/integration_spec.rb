@@ -1,6 +1,6 @@
 require 'spec_helper'
 require 'rddd/views/view'
-require 'rddd/repositories/repository'
+require 'rddd/aggregates/repositories/base'
 
 class ViewRepository < Rddd::Repositories::Base
   def get(id)

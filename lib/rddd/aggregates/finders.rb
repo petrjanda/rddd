@@ -8,7 +8,7 @@ module Rddd
       end
 
       def repository
-        Repositories::RepositoryFactory.build(self)
+        Repositories::Factory.build(self)
       end
 
       private

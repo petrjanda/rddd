@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'rddd/repositories/repository'
+require 'rddd/aggregates/repositories/base'
 
 module Rddd
   module Repositories

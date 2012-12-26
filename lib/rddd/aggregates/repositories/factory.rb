@@ -1,5 +1,5 @@
-require 'rddd/repositories/repository'
 require 'rddd/configuration'
+require 'rddd/aggregates/repositories/base'
 
 module Rddd
   module Repositories
@@ -12,7 +12,7 @@ module Rddd
     # Create instance of Repository using the Configration#repository_creator
     # and passing the class along.
     #
-    class RepositoryFactory
+    class Factory
       CreatorNotGiven = Class.new(RuntimeError)
 
       def self.build(clazz)

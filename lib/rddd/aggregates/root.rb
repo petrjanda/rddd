@@ -1,6 +1,6 @@
 require 'rddd/aggregates/entity'
 require 'rddd/aggregates/finders'
-require 'rddd/repositories/repository_factory'
+require 'rddd/aggregates/repositories/factory'
 
 module Rddd
   module Aggregates

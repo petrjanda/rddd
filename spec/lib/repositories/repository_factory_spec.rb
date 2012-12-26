@@ -1,9 +1,9 @@
 require 'spec_helper'
-require 'rddd/repositories/repository_factory'
+require 'rddd/aggregates/repositories/factory'
 
 module Rddd
   module Repositories
-    describe RepositoryFactory do
+    describe Factory do
       let(:project) { stub('project', :name => 'Foo', :class => stub(:name => 'Foo')) }
 
       let(:repository_creator) do
@@ -34,13 +34,13 @@ module Rddd
           it 'should call the appropriate service' do
             FooRepository.expects(:new)
 
-            RepositoryFactory.build(project.class)
+            Factory.build(project.class)
           end
         end
 
         context 'configuration repository_creator not given' do
           it 'should raise exception' do
-            expect { RepositoryFactory.build(project.class) }.to raise_exception RepositoryFactory::CreatorNotGiven
+            expect { Factory.build(project.class) }.to raise_exception Factory::CreatorNotGiven
           end
         end
       end
