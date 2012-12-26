@@ -10,7 +10,7 @@ module Rddd
     # should be only entity from Aggregate visible from outside to guarantee
     # consistency of all operations performed on the given Aggregate.
     #
-    class AggregateRoot < Entity
+    class Root < Entity
       extend Finders
 
       finder :find
