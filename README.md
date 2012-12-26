@@ -63,9 +63,13 @@ Presenter is the view to the domain data, which is typically aggregation over mu
 language presenter is report. In Rddd, views output plain Ruby hashes, thus no domain object is leaking outside the domain
 itself. The key design goal was to dont let framework later call any additional adhoc methods. Thats why framework doesn't interact with view object directly and pure Hash is returned back.
 
-### Aggregate root, entity, repository
+### Aggregate root
 
-TBA
+### Entity
+
+### Repository
+
+### Factory
 
 ## Planned features
 
