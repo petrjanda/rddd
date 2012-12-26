@@ -7,7 +7,7 @@ describe Rddd::Aggregates::AggregateRoot do
   let(:aggregate_root) { Rddd::Aggregates::AggregateRoot.new(id) }
 
   it 'should be entity' do
-    aggregate_root.should be_kind_of Rddd::Entity
+    aggregate_root.should be_kind_of Rddd::Aggregates::Entity
   end
 
   describe '#find' do
