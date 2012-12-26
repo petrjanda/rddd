@@ -1,5 +1,7 @@
 [rDDD@sniffer](https://sniffer.io/info/public-project-135230969156499600) - see the code quality on Sniffer.io
 
+[![Build Status](https://travis-ci.org/petrjanda/rddd.png?branch=master)](https://travis-ci.org/petrjanda/rddd)
+
 rddd
 ====
 
