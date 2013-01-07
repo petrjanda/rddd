@@ -30,7 +30,7 @@ module Rddd
     # Usage:
     #
     #   class ProjectsView < Rddd::Views::View
-    #     extend Cacheable
+    #     extend Rddd::Views::Cacheable
     #
     #     def build
     #       Projects.find_by_account_id(@id).map { |project| format(project) }
