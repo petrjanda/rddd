@@ -44,11 +44,10 @@ module Rddd
     #     end
     #   end
     #
-    #   ProjectsView.new(account_id).data #= [{:name => 'Rddd', :deathline => '01 January 2013'}]
+    # ProjectsView.new(account_id).data #= [{:name => 'Rddd', :deathline => '01 January 2013'}]
     #
-    #   Second time value is requested, the cache is hit and build is not called
-    #   again.
-    #  
+    # Second time value is requested, the cache is hit and build is not called
+    # again.
     #
     module Cacheable
       def self.included(base)
