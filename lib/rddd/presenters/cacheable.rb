@@ -29,7 +29,7 @@ module Rddd
     #
     # Usage:
     #
-    #   class ProjectsView < Rddd::Presenters::View
+    #   class ProjectsView < Rddd::Presenters::Presenter
     #     extend Rddd::Presenters::Cacheable
     #
     #     def build
@@ -46,8 +46,23 @@ module Rddd
     #
     # ProjectsView.new(account_id).data #= [{:name => 'Rddd', :deathline => '01 January 2013'}]
     #
-    # Second time value is requested, the cache is hit and build is not called
-    # again.
+    # ## Timeout
+    #
+    # By default, there is no expiration to the values you store in the cache.
+    # This means, value is theoretically stored for infinite time or until some
+    # purging mechanism clean the code from cache as the less queried one.
+    #
+    # If you want to have more control of when the certain key should be removed
+    # you can use :timeout option. Its configurable per view.
+    #
+    #   class ProjectsView < Rddd::Presenters::Presenter
+    #     extend Rddd::Presenters::Cacheable
+    #
+    #      cache :timeout => 60 * 24
+    #    end
+    #
+    # Above call to ```cache``` with timeout changed its behavior. Each key for a given
+    # view now expires in 24 * 60 minutes, therefore in a day from its creation.
     #
     module Cacheable
       def self.included(base)
@@ -74,10 +89,14 @@ module Rddd
       end
 
       def data
-        __cache__.read || __update__(build)
+        __read__ || __update__(build)
       end
 
       private
+
+      def __read__
+        __cache__.read
+      end
 
       def __update__(data)
         __cache__.write(data, self.class.timeout)
