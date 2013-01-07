@@ -8,6 +8,6 @@ module Rddd
   class Configuration
     include Singleton
 
-    attr_accessor :service_creator, :repository_creator
+    attr_accessor :service_creator, :repository_creator, :caching_strategy
   end
 end

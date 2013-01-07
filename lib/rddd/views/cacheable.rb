@@ -18,6 +18,10 @@ module Rddd
     #     end
     #   end
     #
+    #   Rddd.configure do |config|
+    #     config.cache_strategy = InMemoryStrategy
+    #   end
+    #
     #
     # Each time you hit data method, cache is first checked for presence of the
     # data and if none is there build method is called to compose the view,
@@ -40,8 +44,7 @@ module Rddd
     #     end
     #   end
     #
-    #   # Suppose there is one project in database for given account.
-    #   ProjectsView.new(account_id).build #= [{:name => 'Rddd', :deathline => '01 January 2013'}]
+    #   ProjectsView.new(account_id).data #= [{:name => 'Rddd', :deathline => '01 January 2013'}]
     #
     #   Second time value is requested, the cache is hit and build is not called
     #   again.
@@ -73,7 +76,7 @@ module Rddd
 
       def data
         return build if self.class.cache_disabled
-        
+
         __cache__.read || __update__(build)
       end
 
@@ -88,7 +91,7 @@ module Rddd
       def __cache__
         CacheEntry.new(
           "#{self.class.name.downcase.to_sym}#{id}", 
-          @repository ||= NilStrategy.new
+          @strategy ||= Configuration.instance.caching_strategy.new
         )
       end
     end

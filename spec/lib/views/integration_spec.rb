@@ -13,6 +13,12 @@ class NilStrategy
 end
 
 describe Rddd::Views::View do
+  before do
+    Rddd.configure do |config|
+      config.caching_strategy = NilStrategy
+    end
+  end
+
   let(:id) { :id }
 
   let(:view) { Rddd::Views::View.new(id).tap {|view| view.extend Rddd::Views::Cacheable } }
