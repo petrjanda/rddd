@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'rddd/views/view'
+require 'rddd/presenters/presenter'
 require 'rddd/aggregates/repositories/base'
 
 class NilStrategy
@@ -12,7 +12,7 @@ class NilStrategy
   end
 end
 
-describe Rddd::Views::View do
+describe Rddd::Presenters::View do
   before do
     Rddd.configure do |config|
       config.caching_strategy = NilStrategy.new
@@ -21,7 +21,7 @@ describe Rddd::Views::View do
 
   let(:id) { :id }
 
-  let(:view) { Rddd::Views::View.new(id).tap {|view| view.extend Rddd::Views::Cacheable } }
+  let(:view) { Rddd::Presenters::View.new(id).tap {|view| view.extend Rddd::Presenters::Cacheable } }
 
   let(:nil_strategy) { stub('nil_strategy') }
 
@@ -45,7 +45,7 @@ describe Rddd::Views::View do
     before do
       view.expects(:build).returns(data)
 
-      NilStrategy.any_instance.expects(:set).with("rddd::views::#{:view}#{:id}", data, anything)
+      NilStrategy.any_instance.expects(:set).with("rddd::presenters::#{:view}#{:id}", data, anything)
     end
 
     it { subject }
@@ -55,7 +55,7 @@ describe Rddd::Views::View do
     subject { view.invalidate }
 
     before do
-      NilStrategy.any_instance.expects(:set).with("rddd::views::#{:view}#{:id}", nil, nil)
+      NilStrategy.any_instance.expects(:set).with("rddd::presenters::#{:view}#{:id}", nil, nil)
     end
 
     it { subject }
@@ -74,11 +74,11 @@ describe Rddd::Views::View do
 
     context 'not cached' do
       before do
-        NilStrategy.any_instance.expects(:get).with("rddd::views::#{:view}#{:id}").returns(nil)
+        NilStrategy.any_instance.expects(:get).with("rddd::presenters::#{:view}#{:id}").returns(nil)
 
         view.expects(:build).returns(data)
 
-        NilStrategy.any_instance.expects(:set).with("rddd::views::#{:view}#{:id}", data, nil)
+        NilStrategy.any_instance.expects(:set).with("rddd::presenters::#{:view}#{:id}", data, nil)
       end
 
       it { subject.should == data }
@@ -86,7 +86,7 @@ describe Rddd::Views::View do
 
     context 'cached' do
       before do
-        NilStrategy.any_instance.expects(:get).with("rddd::views::#{:view}#{:id}").returns(data)
+        NilStrategy.any_instance.expects(:get).with("rddd::presenters::#{:view}#{:id}").returns(data)
       end
 
       it { subject.should == data }
@@ -94,7 +94,7 @@ describe Rddd::Views::View do
   end
 
   describe 'view without cache' do
-    class CacheLessView < Rddd::Views::View
+    class CacheLessView < Rddd::Presenters::View
       def build
       end
     end
@@ -115,8 +115,8 @@ describe Rddd::Views::View do
   end
 
   describe 'timeout enabling' do
-    class TimeoutingView < Rddd::Views::View
-      include Rddd::Views::Cacheable
+    class TimeoutingView < Rddd::Presenters::View
+      include Rddd::Presenters::Cacheable
 
       cache :timeout => 24 * 60
 

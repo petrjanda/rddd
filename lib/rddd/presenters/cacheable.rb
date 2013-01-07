@@ -1,5 +1,5 @@
 module Rddd
-  module Views
+  module Presenters
     #
     # View extension, which would make it cacheable. In case you wanna use it
     # be sure to have a CacheStrategy set in the configuration. As soon as you
@@ -29,8 +29,8 @@ module Rddd
     #
     # Usage:
     #
-    #   class ProjectsView < Rddd::Views::View
-    #     extend Rddd::Views::Cacheable
+    #   class ProjectsView < Rddd::Presenters::View
+    #     extend Rddd::Presenters::Cacheable
     #
     #     def build
     #       Projects.find_by_account_id(@id).map { |project| format(project) }

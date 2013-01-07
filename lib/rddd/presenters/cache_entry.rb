@@ -1,5 +1,5 @@
 module Rddd
-  module Views
+  module Presenters
     #
     # Cache object providing several caching methods on top of the chosen
     # strategy.

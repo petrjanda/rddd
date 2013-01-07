@@ -1,8 +1,8 @@
-require 'rddd/views/cacheable'
-require 'rddd/views/cache_entry'
+require 'rddd/presenters/cacheable'
+require 'rddd/presenters/cache_entry'
 
 module Rddd
-  module Views
+  module Presenters
     class View
       attr_reader :id
 
