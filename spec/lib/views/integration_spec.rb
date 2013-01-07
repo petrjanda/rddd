@@ -102,7 +102,7 @@ describe Rddd::Views::View do
     end
   end
 
-  describe 'cache disabling' do
+  describe 'view without cache' do
     class CacheLessView < Rddd::Views::View
       def build
       end
