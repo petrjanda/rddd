@@ -19,7 +19,7 @@ module Rddd
     #   end
     #
     #   Rddd.configure do |config|
-    #     config.cache_strategy = InMemoryStrategy
+    #     config.cache_strategy = InMemoryStrategy.new
     #   end
     #
     #
@@ -88,7 +88,7 @@ module Rddd
       def __cache__
         CacheEntry.new(
           "#{self.class.name.downcase.to_sym}#{id}", 
-          @strategy ||= Configuration.instance.caching_strategy.new
+          @strategy ||= Configuration.instance.caching_strategy
         )
       end
     end

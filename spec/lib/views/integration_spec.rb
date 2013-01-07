@@ -15,7 +15,7 @@ end
 describe Rddd::Views::View do
   before do
     Rddd.configure do |config|
-      config.caching_strategy = NilStrategy
+      config.caching_strategy = NilStrategy.new
     end
   end
 
@@ -43,11 +43,9 @@ describe Rddd::Views::View do
     subject { view.warm_up }
 
     before do
-      NilStrategy.expects(:new).returns(nil_strategy)
-
       view.expects(:build).returns(data)
 
-      nil_strategy.expects(:set).with("rddd::views::#{:view}#{:id}", data, anything)
+      NilStrategy.any_instance.expects(:set).with("rddd::views::#{:view}#{:id}", data, anything)
     end
 
     it { subject }
@@ -57,9 +55,7 @@ describe Rddd::Views::View do
     subject { view.invalidate }
 
     before do
-      NilStrategy.expects(:new).returns(nil_strategy)
-
-      nil_strategy.expects(:set).with("rddd::views::#{:view}#{:id}", nil, nil)
+      NilStrategy.any_instance.expects(:set).with("rddd::views::#{:view}#{:id}", nil, nil)
     end
 
     it { subject }
@@ -78,15 +74,11 @@ describe Rddd::Views::View do
 
     context 'not cached' do
       before do
-        NilStrategy.expects(:new).returns(nil_strategy)
-      end
-
-      before do
-        nil_strategy.expects(:get).with("rddd::views::#{:view}#{:id}").returns(nil)
+        NilStrategy.any_instance.expects(:get).with("rddd::views::#{:view}#{:id}").returns(nil)
 
         view.expects(:build).returns(data)
 
-        nil_strategy.expects(:set).with("rddd::views::#{:view}#{:id}", data, nil)
+        NilStrategy.any_instance.expects(:set).with("rddd::views::#{:view}#{:id}", data, nil)
       end
 
       it { subject.should == data }
@@ -94,8 +86,7 @@ describe Rddd::Views::View do
 
     context 'cached' do
       before do
-        NilStrategy.expects(:new).returns(nil_strategy)
-        nil_strategy.expects(:get).with("rddd::views::#{:view}#{:id}").returns(data)
+        NilStrategy.any_instance.expects(:get).with("rddd::views::#{:view}#{:id}").returns(data)
       end
 
       it { subject.should == data }
@@ -140,12 +131,11 @@ describe Rddd::Views::View do
     end
 
     it 'should set timeout to cache data' do
-      NilStrategy.expects(:new).returns(nil_strategy)
-      nil_strategy.expects(:get).with("#{:timeoutingview}#{:id}").returns(nil)
+      NilStrategy.any_instance.expects(:get).with("#{:timeoutingview}#{:id}").returns(nil)
 
       timeouting_view.expects(:build).returns(data)
 
-      nil_strategy.expects(:set).with do |got_id, got_data, got_time|
+      NilStrategy.any_instance.expects(:set).with do |got_id, got_data, got_time|
         got_id == "#{:timeoutingview}#{:id}" &&
         got_data == data &&
         got_time.to_i == (Time.now + 24 * 60 * 60).to_i
