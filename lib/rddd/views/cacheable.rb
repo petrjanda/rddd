@@ -74,8 +74,6 @@ module Rddd
       end
 
       def data
-        return build if self.class.cache_disabled
-
         __cache__.read || __update__(build)
       end
 
@@ -96,10 +94,9 @@ module Rddd
     end
 
     module CacheableConfig
-      attr_reader :cache_disabled, :timeout
+      attr_reader :timeout
 
       def cache(attributes)
-        @cache_disabled = !attributes.fetch(:enabled, true)
         @timeout = attributes.fetch(:timeout, nil)
         @timeout = @timeout && 60 * @timeout
       end
