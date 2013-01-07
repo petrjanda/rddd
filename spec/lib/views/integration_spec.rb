@@ -2,20 +2,28 @@ require 'spec_helper'
 require 'rddd/views/view'
 require 'rddd/aggregates/repositories/base'
 
-class ViewRepository < Rddd::Repositories::Base
+class NilStrategy
   def get(id)
+    nil
   end
 
   def set(id, value, timeout)
+    value
   end
 end
 
 describe Rddd::Views::View do
+  before do
+    Rddd.configure do |config|
+      config.caching_strategy = NilStrategy
+    end
+  end
+
   let(:id) { :id }
 
-  let(:view) { Rddd::Views::View.new(id) }
+  let(:view) { Rddd::Views::View.new(id).tap {|view| view.extend Rddd::Views::Cacheable } }
 
-  let(:view_repository) { stub('view_repository') }
+  let(:nil_strategy) { stub('nil_strategy') }
 
   let(:data) { stub('data') }
 
@@ -25,25 +33,21 @@ describe Rddd::Views::View do
     its(:id) { should == id}
   end
 
-  describe '#name' do
-    its(:name) { should == :'rddd::views::view' }
-  end
-
-  describe '#build' do
-    subject { view.build }
+  describe '#data' do
+    subject { view.data }
 
     it { lambda {subject}.should raise_exception NotImplementedError }
   end
 
-  describe '#warm_cache' do
-    subject { view.warm_cache }
+  describe '#warm_up' do
+    subject { view.warm_up }
 
     before do
-      ViewRepository.expects(:new).returns(view_repository)
+      NilStrategy.expects(:new).returns(nil_strategy)
 
       view.expects(:build).returns(data)
 
-      view_repository.expects(:set).with("rddd::views::#{:view}#{:id}", data, anything)
+      nil_strategy.expects(:set).with("rddd::views::#{:view}#{:id}", data, anything)
     end
 
     it { subject }
@@ -53,9 +57,9 @@ describe Rddd::Views::View do
     subject { view.invalidate }
 
     before do
-      ViewRepository.expects(:new).returns(view_repository)
+      NilStrategy.expects(:new).returns(nil_strategy)
 
-      view_repository.expects(:set).with("rddd::views::#{:view}#{:id}", nil)
+      nil_strategy.expects(:set).with("rddd::views::#{:view}#{:id}", nil, nil)
     end
 
     it { subject }
@@ -74,15 +78,15 @@ describe Rddd::Views::View do
 
     context 'not cached' do
       before do
-        ViewRepository.expects(:new).returns(view_repository)
+        NilStrategy.expects(:new).returns(nil_strategy)
       end
 
       before do
-        view_repository.expects(:get).with("rddd::views::#{:view}#{:id}").returns(nil)
+        nil_strategy.expects(:get).with("rddd::views::#{:view}#{:id}").returns(nil)
 
         view.expects(:build).returns(data)
 
-        view_repository.expects(:set).with("rddd::views::#{:view}#{:id}", data, nil)
+        nil_strategy.expects(:set).with("rddd::views::#{:view}#{:id}", data, nil)
       end
 
       it { subject.should == data }
@@ -90,18 +94,16 @@ describe Rddd::Views::View do
 
     context 'cached' do
       before do
-        ViewRepository.expects(:new).returns(view_repository)
-        view_repository.expects(:get).with("rddd::views::#{:view}#{:id}").returns(data)
+        NilStrategy.expects(:new).returns(nil_strategy)
+        nil_strategy.expects(:get).with("rddd::views::#{:view}#{:id}").returns(data)
       end
 
       it { subject.should == data }
     end
   end
 
-  describe 'cache disabling' do
+  describe 'view without cache' do
     class CacheLessView < Rddd::Views::View
-      cache :enabled => false
-
       def build
       end
     end
@@ -113,7 +115,7 @@ describe Rddd::Views::View do
     end
 
     it 'should not try to load data from cache' do
-      ViewRepository.expects(:new).never
+      NilStrategy.expects(:new).never
 
       cache_less_view.expects(:build).returns(data)
 
@@ -123,6 +125,8 @@ describe Rddd::Views::View do
 
   describe 'timeout enabling' do
     class TimeoutingView < Rddd::Views::View
+      include Rddd::Views::Cacheable
+
       cache :timeout => 24 * 60
 
       def build
@@ -136,12 +140,12 @@ describe Rddd::Views::View do
     end
 
     it 'should set timeout to cache data' do
-      ViewRepository.expects(:new).returns(view_repository)
-      view_repository.expects(:get).with("#{:timeoutingview}#{:id}").returns(nil)
+      NilStrategy.expects(:new).returns(nil_strategy)
+      nil_strategy.expects(:get).with("#{:timeoutingview}#{:id}").returns(nil)
 
       timeouting_view.expects(:build).returns(data)
 
-      view_repository.expects(:set).with do |got_id, got_data, got_time|
+      nil_strategy.expects(:set).with do |got_id, got_data, got_time|
         got_id == "#{:timeoutingview}#{:id}" &&
         got_data == data &&
         got_time.to_i == (Time.now + 24 * 60 * 60).to_i
