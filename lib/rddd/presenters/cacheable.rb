@@ -77,7 +77,9 @@ module Rddd
     #    end
     #
     # Above would call ```Marshal::dump``` each time before write to cache and
-    # ```Marshal::load``` each time the value is retrieved from it.
+    # ```Marshal::load``` each time the value is retrieved from it. Yo can inject
+    # your custom serializor class. Make sure it implements the same interface as
+    # Ruby standard ```Marshal::dump``` and ```Marshal::load```.
     #
     module Cacheable
       def self.included(base)
