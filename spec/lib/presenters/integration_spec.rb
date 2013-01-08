@@ -144,4 +144,45 @@ describe Rddd::Presenters::View do
       timeouting_view.data
     end
   end
+
+  describe 'with serializer' do
+    class SerializingView < Rddd::Presenters::View
+      include Rddd::Presenters::Cacheable
+
+      cache :serializer => Marshal
+
+      def build
+      end
+    end
+
+    let(:id) { :id }
+
+    let(:data) { SerializingView.new(1) }
+
+    let(:serializing_view) do
+      SerializingView.new(id)
+    end
+
+    it 'should marshal data on write' do
+      NilStrategy.any_instance.expects(:get).with("#{:serializingview}#{:id}").returns(nil)
+
+      serializing_view.expects(:build).returns(data)
+
+      NilStrategy.any_instance.expects(:set).with do |got_id, got_data, got_time|
+        got_id == "#{:serializingview}#{:id}" &&
+        got_data == Marshal::dump(data) &&
+        got_time == nil
+      end
+
+      serializing_view.data
+    end
+
+    it 'should marshal data on read' do
+      NilStrategy.any_instance.expects(:get).twice.with("#{:serializingview}#{:id}") \
+      .returns(Marshal::dump(data))
+
+      serializing_view.data.should be_instance_of SerializingView
+      serializing_view.data.id.should be 1
+    end
+  end
 end

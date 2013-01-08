@@ -64,6 +64,21 @@ module Rddd
     # Above call to ```cache``` with timeout changed its behavior. Each key for a given
     # view now expires in 24 * 60 minutes, therefore in a day from its creation.
     #
+    # ## Serialization
+    #
+    # By default cache does no serialization so in general String values are expected
+    # as caches almost exclusively work with Strings. You can inject serializor with
+    # cache configuration.
+    #
+    #   class ProjectsView < Rddd::Presenters::Presenter
+    #     extend Rddd::Presenters::Cacheable
+    #
+    #      cache :serializer => Marshal
+    #    end
+    #
+    # Above would call ```Marshal::dump``` each time before write to cache and
+    # ```Marshal::load``` each time the value is retrieved from it.
+    #
     module Cacheable
       def self.included(base)
         base.extend CacheableConfig
@@ -95,10 +110,16 @@ module Rddd
       private
 
       def __read__
-        __cache__.read
+        data = __cache__.read
+
+        return nil unless data
+        
+        self.class.serializer ? self.class.serializer::load(data) : data
       end
 
       def __update__(data)
+        data = self.class.serializer::dump(data) if self.class.serializer
+
         __cache__.write(data, self.class.timeout)
 
         data
@@ -113,11 +134,12 @@ module Rddd
     end
 
     module CacheableConfig
-      attr_reader :timeout
+      attr_reader :timeout, :serializer
 
       def cache(attributes)
         @timeout = attributes.fetch(:timeout, nil)
         @timeout = @timeout && 60 * @timeout
+        @serializer = attributes.fetch(:serializer, nil)
       end
     end
   end
