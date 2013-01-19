@@ -1,4 +1,4 @@
 source 'https://rubygems.org'
 
 gem 'sinatra'
-gem 'rddd', :path => "~/development/rddd"
+gem 'rddd', :path => "../../../"

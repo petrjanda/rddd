@@ -1,7 +1,7 @@
 PATH
   remote: ~/development/rddd
   specs:
-    rddd (0.2.4)
+    rddd (0.3.0)
       curb
 
 GEM
