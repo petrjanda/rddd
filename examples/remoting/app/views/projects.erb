@@ -1,0 +1,11 @@
+<h1>Projects</h1>
+
+<table border='1'>
+  <% @data.each do |project| %>
+    <tr>
+      <td><%= project["name"] %></td>
+      <td><%= project["deathline"] %></td>
+      <td><%= project["description"] %></td>
+    </tr>
+  <% end %>
+</table>

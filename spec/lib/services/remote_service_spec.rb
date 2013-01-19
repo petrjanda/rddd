@@ -4,7 +4,7 @@ require 'rddd/services/remote_service'
 module Rddd
   module Services
     describe RemoteService do
-      let(:attributes) { stub('attributes') }
+      let(:attributes) { {:foo => 'bar'} }
 
       let(:url) { 'http://remote.dev/' }
 
@@ -25,10 +25,11 @@ module Rddd
       describe '#execute' do
         subject { RemoteService.new(url, attributes).execute }
 
-        let(:curl) { stub('curl', :body_str => '{"foo": "bar"}')}
+        let(:curl) { stub('curl', :body_str => '{"foo": "bar"}', :headers => [])}
 
         it 'should raise not implemented' do
-          Curl.expects(:post).with(url, attributes).returns(curl)
+          Curl.expects(:post).with(url, JSON.unparse(attributes)).yields(curl).returns(curl)
+          curl.headers.expects(:[]=).with('Content-Type', 'application/json')
 
           subject.should == {'foo' => 'bar'}
         end

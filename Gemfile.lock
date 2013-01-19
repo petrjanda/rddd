@@ -1,7 +1,8 @@
 PATH
   remote: .
   specs:
-    rddd (0.2.2)
+    rddd (0.2.4)
+      curb
 
 GEM
   remote: https://rubygems.org/

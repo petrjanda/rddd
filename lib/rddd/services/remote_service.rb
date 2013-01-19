@@ -44,7 +44,9 @@ module Rddd
       end
 
       def execute
-        JSON.parse(Curl.post(@url, @attributes).body_str)
+        JSON.parse(Curl.post(@url, JSON.unparse(@attributes)) do |http|
+          http.headers['Content-Type'] = 'application/json' 
+        end.body_str)
       end
 
       def self.build(namespace, service_name, attributes)
