@@ -28,7 +28,7 @@ module Rddd
     #   # Finally here is the remote app
     #   class Projects < Sinatra:Base
     #     post ':service_name' do
-    #       execute_service(params[:service_name, request.body)
+    #       execute_service(params[:service_name], request.body)
     #     end
     #   end
     #
