@@ -1,5 +1,5 @@
 require 'json'
-require 'curb'
+require 'curl'
 require 'rddd/services/service'
 
 module Rddd
