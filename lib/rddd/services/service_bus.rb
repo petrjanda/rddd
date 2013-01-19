@@ -1,4 +1,5 @@
 require 'rddd/services/service_factory'
+require 'rddd/services/remote_service'
 
 module Rddd
   #
@@ -41,7 +42,11 @@ module Rddd
       # @param [Block] optional error callback block.
       #
       def execute_service(service_name, attributes = {})
-        service = build_service(service_name, attributes)
+        namespace, service_name = service_name.to_s.split('__') if service_name.to_s.include?('__')
+
+        service = namespace ? \
+          build_remote_service(namespace.to_sym, service_name.to_sym, attributes) : \
+          build_service(service_name, attributes)
 
         unless service.valid?
           yield(service.errors) if block_given?
@@ -55,6 +60,10 @@ module Rddd
 
       def build_service(service_name, attributes)
         ServiceFactory.build(service_name, attributes)
+      end
+
+      def build_remote_service(namespace, service_name, attributes)
+        RemoteService.build(namespace, service_name, attributes)
       end
     end
   end

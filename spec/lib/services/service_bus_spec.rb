@@ -22,6 +22,17 @@ describe Rddd::Services::ServiceBus do
       end
     end
 
+    context 'namespaced service with remote http transport' do
+      let(:service) { stub('service', :valid? => true, :execute => nil) }
+
+      it do
+        Rddd::Services::RemoteService.expects(:build).with(:remote, :foo, attributes).returns(service)
+        service.expects(:execute)
+
+        controller.execute_service(:remote__foo, attributes)
+      end
+    end
+
     context 'not valid call to service' do
       context 'without block' do
         before { service.stubs(:valid?).returns(false) }

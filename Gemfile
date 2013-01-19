@@ -4,6 +4,7 @@ source 'https://rubygems.org'
 gemspec
 
 gem 'rake'
+gem 'curb'
 
 group :testing do
   gem 'rspec'
