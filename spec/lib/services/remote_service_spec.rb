@@ -25,12 +25,12 @@ module Rddd
       describe '#execute' do
         subject { RemoteService.new(url, attributes).execute }
 
-        let(:curl) { stub('curl', :body_str => 'foo')}
+        let(:curl) { stub('curl', :body_str => '{"foo": "bar"}')}
 
         it 'should raise not implemented' do
           Curl.expects(:post).with(url, attributes).returns(curl)
 
-          subject.should == 'foo'
+          subject.should == {'foo' => 'bar'}
         end
       end
     end
