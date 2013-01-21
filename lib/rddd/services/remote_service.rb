@@ -1,6 +1,7 @@
 require 'json'
 require 'curl'
 require 'rddd/services/service'
+require 'rddd/services/transports/factory'
 
 module Rddd
   module Services
@@ -50,21 +51,9 @@ module Rddd
 
       def self.build(namespace, service_name, attributes = {})
         RemoteService.new(
-          TransportFactory.build(namespace), 
+          Transports::Factory.build(namespace), 
           service_name, 
           attributes
-        )
-      end
-    end
-
-    class TransportFactory
-      def self.build(namespace)
-        remote = Configuration.instance.remote_services.find do |remote|
-          remote[:namespace] == namespace
-        end
-
-        Transports::HttpJson.new(
-          :endpoint => remote[:endpoint]
         )
       end
     end
