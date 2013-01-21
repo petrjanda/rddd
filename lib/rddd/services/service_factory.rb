@@ -8,12 +8,12 @@ module Rddd
       InvalidService = Class.new(RuntimeError)
 
       def self.build(name, attributes)
-        creator = Configuration.instance.service_creator
+        strategy = Configuration.instance.service_factory_strategy
 
-        raise StrategyNotGiven unless creator
+        raise StrategyNotGiven unless strategy
 
         begin
-          creator.call(name).new(attributes)
+          strategy.call(name).new(attributes)
         rescue
           raise Rddd::Services::ServiceFactory::InvalidService
         end

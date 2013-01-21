@@ -6,7 +6,7 @@ module Rddd
     describe ServiceFactory do
       let(:attributes) { stub('attributes') }
 
-      let(:service_creator) do
+      let(:service_factory_strategy) do
         lambda do |name|
           class_name = "#{name.to_s.camel_case}Service"
           Services.const_get(class_name.to_sym)
@@ -22,13 +22,13 @@ module Rddd
       end
 
       describe '.build' do
-        context 'configuration service_creator given' do
+        context 'configuration service_factory_strategy given' do
           before do
-            Rddd.configure { |config| config.service_creator = service_creator }
+            Rddd.configure { |config| config.service_factory_strategy = service_factory_strategy }
           end
 
           after do
-            Rddd.configure { |config| config.service_creator = nil }
+            Rddd.configure { |config| config.service_factory_strategy = nil }
           end
 
           it 'should call the appropriate service' do
@@ -40,17 +40,17 @@ module Rddd
 
         context 'not existing service' do
           before do
-            Rddd.configure { |config| config.service_creator = service_creator }
+            Rddd.configure { |config| config.service_factory_strategy = service_factory_strategy }
           end
 
           after do
-            Rddd.configure { |config| config.service_creator = nil }
+            Rddd.configure { |config| config.service_factory_strategy = nil }
           end
 
           it { expect { ServiceFactory.build(:foo, attributes) }.to raise_exception ServiceFactory::InvalidService }
         end
 
-        context 'configuration service_creator not given' do
+        context 'configuration service_factory_strategy not given' do
           it 'should raise exception' do
             expect { Rddd::Services::ServiceFactory.build(:create_project, attributes) }.to raise_exception Rddd::Services::ServiceFactory::StrategyNotGiven
           end

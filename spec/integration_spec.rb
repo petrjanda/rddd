@@ -43,7 +43,7 @@ describe 'CreateProject' do
     Rddd.configure do |config|
       config.repository_creator = repository_creator
 
-      config.service_creator = lambda do |name|
+      config.service_factory_strategy = lambda do |name|
         class_name = "#{name.to_s.camel_case}Service"
         Object.const_get(class_name.to_sym)
       end
