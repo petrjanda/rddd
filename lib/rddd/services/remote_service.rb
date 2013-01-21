@@ -49,12 +49,23 @@ module Rddd
       end
 
       def self.build(namespace, service_name, attributes = {})
-        remote = Configuration.instance.remote_services.find do |item|
-          item[:namespace] == namespace
+        RemoteService.new(
+          TransportFactory.build(namespace), 
+          service_name, 
+          attributes
+        )
+      end
+    end
+
+    class TransportFactory
+      def self.build(namespace)
+        remote = Configuration.instance.remote_services.find do |remote|
+          remote[:namespace] == namespace
         end
 
-        transport = Transports::HttpJson.new(:endpoint => @endpoint)
-        RemoteService.new(transport, service_name, attributes)
+        Transports::HttpJson.new(
+          :endpoint => remote[:endpoint]
+        )
       end
     end
   end

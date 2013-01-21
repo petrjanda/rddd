@@ -6,7 +6,7 @@ module Rddd
     describe RemoteService do
       let(:attributes) { {:foo => 'bar'} }
 
-      let(:url) { 'http://remote.dev/' }
+      let(:endpoint) { 'http://remote.dev/' }
 
       let(:namespace) { 'namespace' }
 
@@ -14,7 +14,7 @@ module Rddd
 
       before do
         Configuration.instance.remote_services = [
-          {:namespace => namespace, :remote => url}
+          {:namespace => namespace, :endpoint => endpoint}
         ]
       end
 
@@ -32,7 +32,7 @@ module Rddd
         let(:transport) { stub('transport') }
 
         it 'should raise not implemented' do
-          Transports::HttpJson.expects(:new).returns(transport)
+          Transports::HttpJson.expects(:new).with(:endpoint => endpoint).returns(transport)
           transport.expects(:call).with(service_name, attributes).returns(result)
           
           subject.should == result
