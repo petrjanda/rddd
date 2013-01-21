@@ -52,7 +52,7 @@ module Rddd
 
         context 'configuration service_creator not given' do
           it 'should raise exception' do
-            expect { Rddd::Services::ServiceFactory.build(:create_project, attributes) }.to raise_exception Rddd::Services::ServiceFactory::CreatorNotGiven
+            expect { Rddd::Services::ServiceFactory.build(:create_project, attributes) }.to raise_exception Rddd::Services::ServiceFactory::StrategyNotGiven
           end
         end
       end
