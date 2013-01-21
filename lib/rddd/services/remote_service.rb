@@ -37,24 +37,24 @@ module Rddd
     # for any change in your client or services code base.
     #
     class RemoteService < Service
-      def initialize(namespace, service_name, attributes = {})
+      def initialize(transport, service_name, attributes)
         super(attributes)
 
-        remote = Configuration.instance.remote_services.find do |item|
-          item[:namespace] == namespace
-        end
-
-        @endpoint = remote[:endpoint]
+        @transport = transport
         @service_name = service_name
       end
 
       def execute
-        Transports::HttpJson.new(:endpoint => @endpoint) \
-          .call(@service_name, @attributes)
+        @transport.call(@service_name, @attributes)
       end
 
-      def self.build(namespace, service_name, attributes)
-        RemoteService.new(namespace, service_name, attributes)
+      def self.build(namespace, service_name, attributes = {})
+        remote = Configuration.instance.remote_services.find do |item|
+          item[:namespace] == namespace
+        end
+
+        transport = Transports::HttpJson.new(:endpoint => @endpoint)
+        RemoteService.new(transport, service_name, attributes)
       end
     end
   end

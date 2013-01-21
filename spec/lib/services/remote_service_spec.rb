@@ -19,7 +19,7 @@ module Rddd
       end
 
       describe '#valid?' do
-        subject { RemoteService.new(namespace, service_name).valid? }
+        subject { RemoteService.build(namespace, service_name).valid? }
 
         it { should be_true }
       end
