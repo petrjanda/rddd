@@ -8,30 +8,34 @@ module Rddd
 
       let(:url) { 'http://remote.dev/' }
 
-      describe '#initialize' do
-        subject { RemoteService.new(url, attributes) }
+      let(:namespace) { 'namespace' }
 
-        it 'should store attributes' do
-          subject.instance_variable_get(:@attributes).should == attributes
-        end
-      end  
+      let(:service_name) { :service_name }
+
+      before do
+        Configuration.instance.remote_services = [
+          {:namespace => namespace, :remote => url}
+        ]
+      end
 
       describe '#valid?' do
-        subject { RemoteService.new(url).valid? }
+        subject { RemoteService.new(namespace, service_name).valid? }
 
         it { should be_true }
       end
 
       describe '#execute' do
-        subject { RemoteService.new(url, attributes).execute }
+        subject { RemoteService.build(namespace, service_name, attributes).execute }
 
-        let(:curl) { stub('curl', :body_str => '{"foo": "bar"}', :headers => [])}
+        let(:result) { {"foo" => "bar"} }
+
+        let(:transport) { stub('transport') }
 
         it 'should raise not implemented' do
-          Curl.expects(:post).with(url, JSON.unparse(attributes)).yields(curl).returns(curl)
-          curl.headers.expects(:[]=).with('Content-Type', 'application/json')
-
-          subject.should == {'foo' => 'bar'}
+          Transports::HttpJson.expects(:new).returns(transport)
+          transport.expects(:call).with(service_name, attributes).returns(result)
+          
+          subject.should == result
         end
       end
     end

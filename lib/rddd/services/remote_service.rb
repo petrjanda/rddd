@@ -37,24 +37,24 @@ module Rddd
     # for any change in your client or services code base.
     #
     class RemoteService < Service
-      def initialize(url, attributes = {})
+      def initialize(namespace, service_name, attributes = {})
         super(attributes)
 
-        @url = url
-      end
-
-      def execute
-        JSON.parse(Curl.post(@url, JSON.unparse(@attributes)) do |http|
-          http.headers['Content-Type'] = 'application/json' 
-        end.body_str)
-      end
-
-      def self.build(namespace, service_name, attributes)
         remote = Configuration.instance.remote_services.find do |item|
           item[:namespace] == namespace
         end
 
-        RemoteService.new("#{remote[:endpoint]}#{service_name}", attributes)
+        @endpoint = remote[:endpoint]
+        @service_name = service_name
+      end
+
+      def execute
+        Transports::HttpJson.new(:endpoint => @endpoint) \
+          .call(@service_name, @attributes)
+      end
+
+      def self.build(namespace, service_name, attributes)
+        RemoteService.new(namespace, service_name, attributes)
       end
     end
   end
