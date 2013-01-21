@@ -9,7 +9,7 @@ require 'rddd/services/service_bus'
 require 'services/list_service'
 
 Rddd.configure do |config|
-  config.service_creator = lambda do |name|
+  config.service_factory_strategy = lambda do |name|
     class_name = "#{name.to_s.camel_case}Service"
     puts class_name
     Object.const_get(class_name.to_sym)
