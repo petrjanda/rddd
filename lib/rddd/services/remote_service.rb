@@ -1,5 +1,4 @@
 require 'json'
-require 'curl'
 require 'rddd/services/service'
 require 'rddd/services/transports/factory'
 
