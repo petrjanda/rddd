@@ -1,10 +1,10 @@
 source 'https://rubygems.org'
 
-# Specify your gem's dependencies in rddd.gemspec
-gemspec
+gem 'httpclient'
 
-gem 'rake'
-gem 'curb'
+group :development do
+  gem 'rake'
+end
 
 group :testing do
   gem 'rspec'

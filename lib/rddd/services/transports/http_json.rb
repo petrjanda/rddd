@@ -1,3 +1,5 @@
+require 'httpclient'
+
 module Rddd
   module Services
     module Transports
@@ -7,9 +9,12 @@ module Rddd
         end
 
         def call(service_name, attributes)
-          JSON.parse(Curl.post("#{@endpoint}#{service_name}", JSON.unparse(attributes)) do |http|
-            http.headers['Content-Type'] = 'application/json' 
-          end.body_str)
+          JSON.parse(
+            HTTPClient.new.post("#{@endpoint}#{service_name}", 
+              :body => JSON.unparse(attributes), 
+              :header => {'Content-Type' => 'application/json'}
+            ).body
+          )
         end
       end
     end

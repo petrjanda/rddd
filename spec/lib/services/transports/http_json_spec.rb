@@ -20,21 +20,21 @@ module Rddd
 
           let(:attributes) { {'foo' => 'bar'} }
 
-          let(:result) { {'foo' => 'bar'} }
+          let(:body) { {'foo' => 'bar'} }
 
-          let(:curl) { stub('curl', :body_str => '{"foo": "bar"}', :headers => [])}
+          let(:client) { stub('client') }
+
+          let(:result) { stub('result', :body => JSON.unparse(body)) }
 
           before do
-            Curl.expects(:post) \
-            .with('http://remote.dev/service_name', JSON.unparse(attributes)) \
-            .yields(curl) \
-            .returns(curl)
-
-            curl.headers.expects(:[]=).with('Content-Type', 'application/json')
+            HTTPClient.expects(:new).returns(client)
+            client.expects(:post) \
+            .with('http://remote.dev/service_name', :body => JSON.unparse(attributes), :header => {'Content-Type' => 'application/json'}) \
+            .returns(result)
           end
 
 
-          it { should == result }
+          it { should == body }
         end
       end
     end
